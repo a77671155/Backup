@@ -1,0 +1,28 @@
+#from pulsesensor import Pulsesensor
+from kafka import KafkaProducer
+import time
+import datetime
+import csv
+import json
+
+producer = KafkaProducer(bootstrap_servers='54.178.175.64:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+
+#p = Pulsesensor()
+#p.startAsyncBPM()
+
+#fieldnames = ['datetime', 'BPM']
+#try:
+while True:
+        result = 1
+        dt = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-4])
+
+        if result > 0:
+            print(dt + "  result: %d" % result)
+        else:
+            print(dt + "  No Heartbeat found")
+
+        producer.send('camera', {'user':'user-1', 'Ans': result, 'datetime':dt}) # for kafka
+        time.sleep(1)
+#except Exception as e:
+    #p.stopAsyncBPM()
+    #print()
